@@ -66,6 +66,9 @@
             </div>
             
             <div id="header-controls" class="flex items-center gap-3">
+                <span id="role-badge" class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1.5 rounded-xl border border-indigo-200">
+                    Mode: Belum Pilih Peran
+                </span>
                 <button id="btn-reopen-modal" onclick="reopenModal()" class="hidden bg-amber-500 hover:bg-amber-600 text-white font-bold px-3 py-2 rounded-xl text-xs transition flex items-center gap-2 shadow-lg animate-pulse">
                     <i class="fa-solid fa-folder-open"></i> Buka Soal Terakhir
                 </button>
@@ -210,7 +213,7 @@
                         </div>
                     </div>
 
-                    <button onclick="finishGameEarly('career')" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2">
+                    <button id="btn-finish-career-bk" onclick="finishGameEarly('career')" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 hidden">
                         <i class="fa-solid fa-flag-checkered"></i> Selesaikan Game Sekarang (Guru BK)
                     </button>
                 </div>
@@ -277,7 +280,7 @@
                         </button>
                     </div>
 
-                    <button onclick="finishGameEarly('wheel')" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2">
+                    <button id="btn-finish-wheel-bk" onclick="finishGameEarly('wheel')" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 hidden">
                         <i class="fa-solid fa-flag-checkered"></i> Selesaikan Game Sekarang (Guru BK)
                     </button>
                 </div>
@@ -348,7 +351,7 @@
                 </div>
 
                 <div class="flex justify-end mt-2">
-                    <button onclick="finishGameEarly('bridge')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2 px-4 rounded-xl transition flex items-center gap-2">
+                    <button id="btn-finish-bridge-bk" onclick="finishGameEarly('bridge')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2 px-4 rounded-xl transition flex items-center gap-2 hidden">
                         <i class="fa-solid fa-flag-checkered"></i> Selesaikan Game Sekarang (Guru BK)
                     </button>
                 </div>
@@ -363,28 +366,87 @@
         <p>© 2026 EduGuide Arcade - Modul Edukasi & Bimbingan Konseling Kelompok Interaktif</p>
     </footer>
 
+    <!-- MODAL ROLE SELECTION & ACCESS CODE -->
+    <div id="role-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl text-center border-2 border-indigo-100">
+            <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-sm">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <h3 class="text-2xl font-extrabold text-slate-800 mb-1">Selamat Datang!</h3>
+            <p class="text-xs text-slate-500 font-medium mb-6">Pilih peran dan masukkan kode akses untuk memulai permainan.</p>
+
+            <!-- Role Selector -->
+            <div class="flex rounded-2xl bg-slate-100 p-1 mb-5">
+                <button id="tab-student" onclick="selectRoleTab('student')" class="flex-1 py-2.5 rounded-xl text-xs font-bold transition bg-indigo-600 text-white shadow-sm">
+                    <i class="fa-solid fa-user-graduate"></i> Siswa / Pemain
+                </button>
+                <button id="tab-teacher" onclick="selectRoleTab('teacher')" class="flex-1 py-2.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-800">
+                    <i class="fa-solid fa-chalkboard-user"></i> Guru BK
+                </button>
+            </div>
+
+            <!-- Student Options -->
+            <div id="student-role-section" class="space-y-4">
+                <div class="text-left">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Kode Akses Siswa:</label>
+                    <input type="password" id="student-code-input" placeholder="Masukkan kode akses" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 text-sm font-medium outline-none">
+                </div>
+                <div class="text-left">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Pemain Ke-berapa:</label>
+                    <select id="student-slot-select" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 text-sm font-medium outline-none bg-white">
+                        <option value="0">Kelompok 1 (🔴 Merah)</option>
+                        <option value="1">Kelompok 2 (🔵 Biru)</option>
+                        <option value="2">Kelompok 3 (🟢 Hijau)</option>
+                        <option value="3">Kelompok 4 (🟡 Kuning)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Teacher Options -->
+            <div id="teacher-role-section" class="space-y-4 hidden">
+                <div class="text-left">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Kode Akses Guru BK:</label>
+                    <input type="password" id="teacher-code-input" placeholder="Masukkan kode akses" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 text-sm font-medium outline-none">
+                </div>
+            </div>
+
+            <!-- Error Feedback -->
+            <p id="role-error-msg" class="text-xs text-rose-500 font-semibold mt-3 hidden">
+                <i class="fa-solid fa-triangle-exclamation"></i> Kode akses salah! Periksa kembali penulisan.
+            </p>
+
+            <button onclick="confirmRole()" class="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition active:scale-95 text-sm">
+                Masuk Permainan <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- MODAL DIALOG / POPUP FOR KUIS -->
     <div id="quiz-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-lg w-full p-6 md:p-8 shadow-2xl transform transition-all scale-95 opacity-0" id="quiz-modal-card">
-            <div class="flex justify-between items-start mb-4">
-                <span id="modal-badge" class="px-3 py-1 bg-indigo-100 text-indigo-700 text-xs font-bold rounded-full uppercase tracking-wider">Kuis Karir</span>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold" title="Tutup Modal">&times;</button>
-            </div>
-            
-            <h3 id="modal-title" class="text-xl font-bold text-slate-800 mb-3">Pertanyaan Kuis</h3>
-            <p id="modal-description" class="text-slate-600 text-sm mb-6 leading-relaxed">Deskripsi pertanyaan akan muncul di sini.</p>
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 md:p-8 shadow-2xl transform transition-all scale-95 opacity-0 max-h-[90vh] overflow-y-auto flex flex-col justify-between relative" id="quiz-modal-card">
+            <div>
+                <div class="flex justify-between items-start mb-4 sticky top-0 bg-white z-10 pt-1 pb-2 border-b border-slate-100">
+                    <span id="modal-badge" class="px-3 py-1 bg-indigo-100 text-indigo-700 text-xs font-bold rounded-full uppercase tracking-wider">Kuis Karir</span>
+                    <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold" title="Tutup Modal">&times;</button>
+                </div>
+                
+                <h3 id="modal-title" class="text-xl font-bold text-slate-800 mb-3">Pertanyaan Kuis</h3>
+                <p id="modal-description" class="text-slate-600 text-sm mb-6 leading-relaxed">Deskripsi pertanyaan akan muncul di sini.</p>
 
-            <div id="modal-options" class="space-y-3 mb-6">
-                <!-- Option buttons loaded by JS -->
+                <div id="modal-options" class="space-y-3 mb-6">
+                    <!-- Option buttons loaded by JS -->
+                </div>
+
+                <div id="modal-result" class="hidden p-4 rounded-2xl text-sm mb-4">
+                    <!-- Result feedback -->
+                </div>
             </div>
 
-            <div id="modal-result" class="hidden p-4 rounded-2xl text-sm mb-4">
-                <!-- Result feedback -->
+            <div class="sticky bottom-0 bg-white pt-3 pb-1 mt-2 border-t border-slate-100 z-10">
+                <button id="modal-btn-continue" onclick="closeModal()" class="hidden w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl transition shadow-lg">
+                    Lanjutkan Permainan
+                </button>
             </div>
-
-            <button id="modal-btn-continue" onclick="closeModal()" class="hidden w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl transition">
-                Lanjutkan Permainan
-            </button>
         </div>
     </div>
 
@@ -409,13 +471,94 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        /* ================= GLOBAL MULTIPLAYER & MODAL STATE ================= */
+        /* ================= GLOBAL MULTIPLAYER & ROLE STATE ================= */
         const playerColors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b'];
         const playerClassNames = ['player-1-bg', 'player-2-bg', 'player-3-bg', 'player-4-bg'];
         const playerNames = ['Kelompok 1', 'Kelompok 2', 'Kelompok 3', 'Kelompok 4'];
 
+        let currentUserRole = null; // 'teacher' or 'student'
+        let myPlayerIndex = 0; // 0..3 for student
+        let selectedTab = 'student';
+
         let currentPlayerIndex = 0; // 0..3
         let lastOpenedModalData = null; // Memory for reopening modal if accidentally closed
+
+        function checkTurnPermission() {
+            if (currentUserRole === 'teacher') return true;
+            if (currentUserRole === 'student' && myPlayerIndex === currentPlayerIndex) return true;
+            return false;
+        }
+
+        function showNotYourTurnNotice() {
+            openModal(
+                "Bukan Giliranmu",
+                "Peringatan Giliran",
+                `Saat ini adalah giliran ${playerNames[currentPlayerIndex]}. Kamu terdaftar sebagai ${playerNames[myPlayerIndex]}. Harap tunggu giliran kelompokmu!`,
+                [{ text: "Mengerti", correct: true }],
+                () => { closeModal(); }
+            );
+        }
+
+        /* ================= ROLE CONTROL & SECURITY KODE ================= */
+        function selectRoleTab(tab) {
+            playSound('click');
+            selectedTab = tab;
+            const tabStudent = document.getElementById('tab-student');
+            const tabTeacher = document.getElementById('tab-teacher');
+            const studentSec = document.getElementById('student-role-section');
+            const teacherSec = document.getElementById('teacher-role-section');
+            const errBox = document.getElementById('role-error-msg');
+
+            errBox.classList.add('hidden');
+
+            if (tab === 'student') {
+                tabStudent.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition bg-indigo-600 text-white shadow-sm";
+                tabTeacher.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-800";
+                studentSec.classList.remove('hidden');
+                teacherSec.classList.add('hidden');
+            } else {
+                tabTeacher.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition bg-indigo-600 text-white shadow-sm";
+                tabStudent.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-800";
+                teacherSec.classList.remove('hidden');
+                studentSec.classList.add('hidden');
+            }
+        }
+
+        function confirmRole() {
+            playSound('click');
+            const errBox = document.getElementById('role-error-msg');
+            errBox.classList.add('hidden');
+
+            if (selectedTab === 'student') {
+                const code = document.getElementById('student-code-input').value.trim();
+                if (code !== 'Siswa MTs') {
+                    errBox.innerText = 'Kode akses Siswa salah! Gunakan: Siswa MTs';
+                    errBox.classList.remove('hidden');
+                    return;
+                }
+                currentUserRole = 'student';
+                myPlayerIndex = parseInt(document.getElementById('student-slot-select').value);
+                document.getElementById('role-badge').innerText = `Mode: Siswa (${playerNames[myPlayerIndex]})`;
+                document.getElementById('role-badge').className = "bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1.5 rounded-xl border border-amber-200";
+            } else {
+                const code = document.getElementById('teacher-code-input').value.trim();
+                if (code !== 'Guru BK') {
+                    errBox.innerText = 'Kode akses Guru BK salah! Gunakan: Guru BK';
+                    errBox.classList.remove('hidden');
+                    return;
+                }
+                currentUserRole = 'teacher';
+                document.getElementById('role-badge').innerText = "Mode: Guru BK";
+                document.getElementById('role-badge').className = "bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-xl border border-emerald-200";
+
+                // Show BK control finish buttons
+                document.getElementById('btn-finish-career-bk').classList.remove('hidden');
+                document.getElementById('btn-finish-wheel-bk').classList.remove('hidden');
+                document.getElementById('btn-finish-bridge-bk').classList.remove('hidden');
+            }
+
+            document.getElementById('role-modal').classList.add('hidden');
+        }
 
         /* ================= AUDIO SYNTHESIZER ================= */
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -781,6 +924,11 @@
         }
 
         function rollCareerDice() {
+            if (!checkTurnPermission()) {
+                showNotYourTurnNotice();
+                return;
+            }
+
             const btn = document.getElementById('btn-roll-dice');
             const diceVis = document.getElementById('dice-visual');
             btn.disabled = true;
@@ -1115,6 +1263,11 @@
         }
 
         function spinWheel() {
+            if (!checkTurnPermission()) {
+                showNotYourTurnNotice();
+                return;
+            }
+
             if (isSpinning) return;
             isSpinning = true;
             playSound('click');
@@ -1251,6 +1404,11 @@
         }
 
         function drawBridgeCard() {
+            if (!checkTurnPermission()) {
+                showNotYourTurnNotice();
+                return;
+            }
+
             if (bridgeQuestionCount > 30) {
                 showWinners(playersBridge);
                 return;
